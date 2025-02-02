@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Library__Management_Application.DTOs.AuthorDTOs;
 using Library__Management_Application.Models;
 using Library__Management_Application.PB503Exceptions;
 using Library__Management_Application.Repositories.Implementations;
@@ -19,10 +21,19 @@ namespace Library__Management_Application.Services.Implementations
             authorRepository = new AuthorRepository();
         }
 
-        public void Create(Author author)
+        public void Create(AuthorCreateDto authorGetDto)
         {
-            if (string.IsNullOrWhiteSpace(author.Name)) throw new InvalidException("Author name cannot be null or empty.");
-            if (author is null) throw new NotFoundException("Author not found.");
+            if (string.IsNullOrWhiteSpace(authorGetDto.Name)) throw new InvalidException("Author name cannot be null or empty.");
+            if (authorGetDto is null) throw new NotFoundException("Author not found.");
+
+            Author author = new Author()
+            {
+                Name = authorGetDto.Name,
+                IsDeleted = authorGetDto.IsDeleted,
+                CreateDate = DateTime.UtcNow.AddHours(4),
+                UpdateDate = DateTime.UtcNow.AddHours(4),
+                Books = authorGetDto.Books
+            };
 
             authorRepository.Create(author);
             int result = authorRepository.Commit();
@@ -39,11 +50,9 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Delete(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            var data = authorRepository.GetById(id);
-            if (data is null) throw new NotFoundException("Author not found.");
-
-            authorRepository.Delete(data);
+            var author = authorRepository.GetById(id);
+            if (author is null) throw new NotFoundException("Author not found.");
+            author.IsDeleted = true;
             int result = authorRepository.Commit();
 
             if (result > 0)
@@ -56,29 +65,36 @@ namespace Library__Management_Application.Services.Implementations
             }
         }
 
-        public List<Author> GetAll()
-        {
-            var datas = authorRepository.GetAll();
-            if (datas is null) throw new NotFoundException("Authors not found.");
-            return datas;
-        }
+        public List<AuthorGetDto> GetAll()
+            => authorRepository.GetAll().Select(x => new AuthorGetDto()
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToList();
 
-        public Author GetById(int id)
+        public AuthorGetDto GetById(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            var data = authorRepository.GetById(id);
-            if (data is null) throw new NotFoundException("Author not found.");
-            return data;
-        }
-
-        public void Update(int id, Author author)
-        {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            if (author is null) throw new NotFoundException("Author not found.");
             var data = authorRepository.GetById(id);
             if (data is null) throw new NotFoundException("Author not found.");
 
-            data.Name = author.Name;
+            var authorGetDto = new AuthorGetDto()
+            {
+                Id = data.Id,
+                Name = data.Name,
+                Books = data.Books
+            };
+            return authorGetDto;
+        }
+
+        public void Update(int id, AuthorUpdateDto authorUpdateDto)
+        {
+            if (authorUpdateDto is null) throw new NotFoundException("Author not found.");
+            var data = authorRepository.GetById(id);
+            if (data is null) throw new NotFoundException("Author not found.");
+
+            data.Name = authorUpdateDto.Name;
+            data.UpdateDate = authorUpdateDto.UpdateDate;
+            data.Books = authorUpdateDto.Books;
             int result = authorRepository.Commit();
 
             if (result > 0)

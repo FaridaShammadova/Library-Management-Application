@@ -129,3 +129,4 @@ C:\Users\USER\Desktop\Library _Management_Application\Library _Management_Applic
 C:\Users\USER\Desktop\Library _Management_Application\Library _Management_Application\obj\Debug\net8.0\Library _Management_Application.pdb
 C:\Users\USER\Desktop\Library _Management_Application\Library _Management_Application\obj\Debug\net8.0\Library _Management_Application.genruntimeconfig.cache
 C:\Users\USER\Desktop\Library _Management_Application\Library _Management_Application\obj\Debug\net8.0\ref\Library _Management_Application.dll
+C:\Users\USER\Desktop\Library _Management_Application\Library _Management_Application\obj\Debug\net8.0\Library _Management_Application.sourcelink.json

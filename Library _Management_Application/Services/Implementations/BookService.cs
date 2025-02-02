@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library__Management_Application.DTOs.BookDTOs;
 using Library__Management_Application.Models;
 using Library__Management_Application.PB503Exceptions;
 using Library__Management_Application.Repositories.Implementations;
@@ -19,12 +20,22 @@ namespace Library__Management_Application.Services.Implementations
             bookRepository = new BookRepository();
         }
 
-        public void Create(Book book)
+        public void Create(BookCreateDto bookCreateDto)
         {
-            if (string.IsNullOrWhiteSpace(book.Title)) throw new InvalidException("Book title cannot be null or empty.");
-            if (string.IsNullOrWhiteSpace(book.Description)) throw new InvalidException("Book description cannot be null or empty.");
-            if (book.PublishedYear < 0) throw new InvalidException("Published year cannot be negative.");
-            if (book is null) throw new NotFoundException("Book not found.");
+            if (string.IsNullOrWhiteSpace(bookCreateDto.Title)) throw new InvalidException("Book title cannot be null or empty.");
+            if (string.IsNullOrWhiteSpace(bookCreateDto.Description)) throw new InvalidException("Book description cannot be null or empty.");
+            if (bookCreateDto.PublishedYear < 0) throw new InvalidException("Published year cannot be negative.");
+            if (bookCreateDto is null) throw new NotFoundException("Book not found.");
+
+            Book book = new Book()
+            {
+                Title = bookCreateDto.Title,
+                Description = bookCreateDto.Description,
+                PublishedYear = bookCreateDto.PublishedYear,
+                IsDeleted = false,
+                CreateDate = DateTime.UtcNow.AddHours(4),
+                UpdateDate = DateTime.UtcNow.AddHours(4)
+            };
 
             bookRepository.Create(book);
             int result = bookRepository.Commit();
@@ -41,11 +52,10 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Delete(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            var data = bookRepository.GetById(id);
-            if (data is null) throw new NotFoundException("Book not found.");
+            var book = bookRepository.GetById(id);
+            if (book is null) throw new NotFoundException("Book not found.");
 
-            bookRepository.Delete(data);
+            book.IsDeleted = true;
             int result = bookRepository.Commit();
 
             if (result > 0)
@@ -58,31 +68,44 @@ namespace Library__Management_Application.Services.Implementations
             }
         }
 
-        public List<Book> GetAll()
-        {
-            var datas = bookRepository.GetAll();
-            if (datas is null) throw new NotFoundException("Books not found.");
-            return datas;
-        }
+        public List<BookGetDto> GetAll()
+            => bookRepository.GetAll().Select(x => new BookGetDto()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description,
+                PublishedYear = x.PublishedYear
+            }).ToList();
 
-        public Book GetById(int id)
-        {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            var data = bookRepository.GetById(id);
-            if (data is null) throw new NotFoundException("Book not found.");
-            return data;
-        }
 
-        public void Update(int id, Book book)
+
+        public BookGetDto GetById(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            if (book is null) throw new NotFoundException("Book not found.");
             var data = bookRepository.GetById(id);
             if (data is null) throw new NotFoundException("Book not found.");
 
-            data.Title = book.Title;
-            data.Description = book.Description;
-            data.PublishedYear = book.PublishedYear;
+            BookGetDto bookGetDto = new BookGetDto()
+            {
+                Id = data.Id,
+                Title = data.Title,
+                Description = data.Description,
+                PublishedYear = data.PublishedYear
+            };
+
+            return bookGetDto;
+        }
+
+        public void Update(int id, BookUpdateDto bookUpdateDto)
+        {
+            if (bookUpdateDto is null) throw new NotFoundException("Book not found.");
+            var data = bookRepository.GetById(id);
+            if (data is null) throw new NotFoundException("Book not found.");
+
+            data.Title = bookUpdateDto.Title;
+            data.Description = bookUpdateDto.Description;
+            data.PublishedYear = bookUpdateDto.PublishedYear;
+            data.UpdateDate = bookUpdateDto.UpdateDate;
+
             int result = bookRepository.Commit();
 
             if (result > 0)

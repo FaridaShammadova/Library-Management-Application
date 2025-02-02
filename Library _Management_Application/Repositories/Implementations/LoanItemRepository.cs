@@ -10,22 +10,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library__Management_Application.Repositories.Implementations
 {
-    public class AuthorRepository : GenericRepository<Author>, IAuthorRepository
+    public class LoanItemRepository : GenericRepository<LoanItem>, ILoanItemRepository
     {
         private readonly AppDbContext context;
-        public AuthorRepository()
+        public LoanItemRepository()
         {
             context = new AppDbContext();
         }
 
-        public Author? GetAuthorById(int id)
-            => context.Authors
-            .Include(x => x.Books)
+        public LoanItem? GetLoanItemById(int id)
+            => context.LoanItems
+            .Include(x => x.Book)
+            .Include(x => x.Loan)
             .FirstOrDefault(x => x.Id == id);
 
-        public List<Author> GetAuthorAll()
-            => context.Authors
-            .Include(x => x.Books)
+        public List<LoanItem> GetLoanItemAll(int id)
+            => context.LoanItems
+            .Include(x => x.Book)
+            .Include(x=> x.Loan)
             .ToList();
     }
 }

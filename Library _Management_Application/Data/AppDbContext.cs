@@ -13,6 +13,8 @@ namespace Library__Management_Application.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Borrower> Borrowers { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanItem> LoanItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

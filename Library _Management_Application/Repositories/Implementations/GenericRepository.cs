@@ -27,9 +27,9 @@ namespace Library__Management_Application.Repositories.Implementations
             => context.Set<T>().Remove(entity);
 
         public List<T> GetAll()
-            => context.Set<T>().ToList();
+            => context.Set<T>().Where(x => x.IsDeleted == false).ToList();
 
         public T GetById(int id)
-            => context.Set<T>().FirstOrDefault(x => x.Id == id);
+            => context.Set<T>().Where(x => x.IsDeleted == false).FirstOrDefault(x => x.Id == id);
     }
 }

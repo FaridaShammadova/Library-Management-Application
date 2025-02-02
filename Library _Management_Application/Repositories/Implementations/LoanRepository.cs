@@ -7,25 +7,28 @@ using Library__Management_Application.Data;
 using Library__Management_Application.Models;
 using Library__Management_Application.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Library__Management_Application.Repositories.Implementations
 {
-    public class AuthorRepository : GenericRepository<Author>, IAuthorRepository
+    public class LoanRepository : GenericRepository<Loan>, ILoanRepository
     {
         private readonly AppDbContext context;
-        public AuthorRepository()
+        public LoanRepository()
         {
             context = new AppDbContext();
         }
 
-        public Author? GetAuthorById(int id)
-            => context.Authors
-            .Include(x => x.Books)
+        public Loan? GetLoanById(int id)
+            => context.Loans
+            .Include(x => x.Borrower)
+            .Include(x => x.LoanItems)
             .FirstOrDefault(x => x.Id == id);
 
-        public List<Author> GetAuthorAll()
-            => context.Authors
-            .Include(x => x.Books)
+        public List<Loan> GetLoanAll(int id)
+            => context.Loans
+            .Include(x => x.Borrower)
+            .Include(x => x.LoanItems)
             .ToList();
     }
 }
