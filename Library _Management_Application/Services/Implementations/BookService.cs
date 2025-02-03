@@ -22,9 +22,6 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Create(BookCreateDto bookCreateDto)
         {
-            if (string.IsNullOrWhiteSpace(bookCreateDto.Title)) throw new InvalidException("Book title cannot be null or empty.");
-            if (string.IsNullOrWhiteSpace(bookCreateDto.Description)) throw new InvalidException("Book description cannot be null or empty.");
-            if (bookCreateDto.PublishedYear < 0) throw new InvalidException("Published year cannot be negative.");
             if (bookCreateDto is null) throw new NotFoundException("Book not found.");
 
             Book book = new Book()
@@ -34,7 +31,8 @@ namespace Library__Management_Application.Services.Implementations
                 PublishedYear = bookCreateDto.PublishedYear,
                 IsDeleted = false,
                 CreateDate = DateTime.UtcNow.AddHours(4),
-                UpdateDate = DateTime.UtcNow.AddHours(4)
+                UpdateDate = DateTime.UtcNow.AddHours(4),
+                //Authors = bookCreateDto.Authors
             };
 
             bookRepository.Create(book);
@@ -74,7 +72,8 @@ namespace Library__Management_Application.Services.Implementations
                 Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
-                PublishedYear = x.PublishedYear
+                PublishedYear = x.PublishedYear,
+                //Authors = x.Authors
             }).ToList();
 
 
@@ -89,7 +88,8 @@ namespace Library__Management_Application.Services.Implementations
                 Id = data.Id,
                 Title = data.Title,
                 Description = data.Description,
-                PublishedYear = data.PublishedYear
+                PublishedYear = data.PublishedYear,
+                //Authors = data.Authors
             };
 
             return bookGetDto;
@@ -105,6 +105,7 @@ namespace Library__Management_Application.Services.Implementations
             data.Description = bookUpdateDto.Description;
             data.PublishedYear = bookUpdateDto.PublishedYear;
             data.UpdateDate = bookUpdateDto.UpdateDate;
+            //data.Authors = bookUpdateDto.Authors;
 
             int result = bookRepository.Commit();
 

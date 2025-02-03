@@ -8,6 +8,7 @@ namespace Library__Management_Application.DTOs.BorrowerDTOs
 {
     public class BorrowerGetDto
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
     }

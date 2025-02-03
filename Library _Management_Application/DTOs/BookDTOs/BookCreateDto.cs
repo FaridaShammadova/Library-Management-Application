@@ -13,5 +13,6 @@ namespace Library__Management_Application.DTOs.BookDTOs
         public string? Description { get; set; }
         public int PublishedYear { get; set; }
         public bool IsDeleted { get; set; }
+        //public List<Author>? Authors { get; set; }
     }
 }

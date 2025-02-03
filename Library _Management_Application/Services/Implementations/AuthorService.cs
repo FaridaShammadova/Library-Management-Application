@@ -23,7 +23,6 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Create(AuthorCreateDto authorGetDto)
         {
-            if (string.IsNullOrWhiteSpace(authorGetDto.Name)) throw new InvalidException("Author name cannot be null or empty.");
             if (authorGetDto is null) throw new NotFoundException("Author not found.");
 
             Author author = new Author()
@@ -32,7 +31,6 @@ namespace Library__Management_Application.Services.Implementations
                 IsDeleted = authorGetDto.IsDeleted,
                 CreateDate = DateTime.UtcNow.AddHours(4),
                 UpdateDate = DateTime.UtcNow.AddHours(4),
-                Books = authorGetDto.Books
             };
 
             authorRepository.Create(author);
@@ -80,8 +78,7 @@ namespace Library__Management_Application.Services.Implementations
             var authorGetDto = new AuthorGetDto()
             {
                 Id = data.Id,
-                Name = data.Name,
-                Books = data.Books
+                Name = data.Name
             };
             return authorGetDto;
         }

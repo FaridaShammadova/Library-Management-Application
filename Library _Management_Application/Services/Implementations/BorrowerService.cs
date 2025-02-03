@@ -22,15 +22,15 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Create(BorrowerCreateDto borrowerCreateDto)
         {
-            if (string.IsNullOrWhiteSpace(borrowerCreateDto.Name)) throw new InvalidException("Borrower name cannot be null or empty.");
-            if (string.IsNullOrWhiteSpace(borrowerCreateDto.Email)) throw new InvalidException("Borrower email cannot be null or empty.");
             if (borrowerCreateDto is null) throw new NotFoundException("Borrower not found.");
 
             Borrower borrower = new Borrower()
             {
                 Name = borrowerCreateDto.Name,
                 Email = borrowerCreateDto.Email,
-                IsDeleted = false
+                IsDeleted = false,
+                CreateDate = DateTime.UtcNow.AddHours(4),
+                UpdateDate = DateTime.UtcNow.AddHours(4)
             };
 
             borrowerRepository.Create(borrower);
@@ -48,11 +48,10 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Delete(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
-            var data = borrowerRepository.GetById(id);
-            if (data is null) throw new NotFoundException("Borrower not found.");
+            var borrower = borrowerRepository.GetById(id);
+            if (borrower is null) throw new NotFoundException("Borrower not found.");
 
-            borrowerRepository.Delete(data);
+            borrower.IsDeleted = true;
             int result = borrowerRepository.Commit();
 
             if (result > 0)
@@ -68,18 +67,19 @@ namespace Library__Management_Application.Services.Implementations
         public List<BorrowerGetDto> GetAll()
             => borrowerRepository.GetAll().Select(x => new BorrowerGetDto()
             {
+                Id = x.Id,
                 Name = x.Name,
                 Email = x.Email
             }).ToList();
 
         public BorrowerGetDto GetById(int id)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
             var data = borrowerRepository.GetById(id);
             if (data is null) throw new NotFoundException("Borrower not found.");
 
             BorrowerGetDto borrowerGetDto = new BorrowerGetDto()
             {
+                Id = data.Id,
                 Name = data.Name,
                 Email = data.Email
             };
@@ -89,7 +89,6 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Update(int id, BorrowerUpdateDto borrowerUpdateDto)
         {
-            if (id < 1) throw new InvalidException("Id cannot be less than 1.");
             if (borrowerUpdateDto is null) throw new NotFoundException("Borrower not found.");
             var data = borrowerRepository.GetById(id);
             if (data is null) throw new NotFoundException("Borrower not found.");
@@ -97,6 +96,7 @@ namespace Library__Management_Application.Services.Implementations
             data.Name = borrowerUpdateDto.Name;
             data.Email = borrowerUpdateDto.Email;
             data.UpdateDate = borrowerUpdateDto.UpdateDate;
+
             int result = borrowerRepository.Commit();
 
             if (result > 0)
