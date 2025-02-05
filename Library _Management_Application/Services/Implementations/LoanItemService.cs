@@ -67,8 +67,8 @@ namespace Library__Management_Application.Services.Implementations
             => loanItemRepository.GetAll().Select(x => new LoanItemGetDto()
             {
                 Id = x.Id,
-                BookId = x.BookId,
-                LoanId = x.LoanId
+                Book = x.Book,
+                Loan = x.Loan
             }).ToList();
 
         public LoanItemGetDto GetById(int id)
@@ -79,8 +79,8 @@ namespace Library__Management_Application.Services.Implementations
             LoanItemGetDto loanItemGetDto = new LoanItemGetDto()
             {
                 Id = data.Id,
-                BookId = data.BookId,
-                LoanId = data.LoanId
+                Book = data.Book,
+                Loan = data.Loan
             };
 
             return loanItemGetDto;

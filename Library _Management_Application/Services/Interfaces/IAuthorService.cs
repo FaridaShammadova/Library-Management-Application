@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library__Management_Application.DTOs.AuthorDTOs;
 using Library__Management_Application.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library__Management_Application.Services.Interfaces
 {

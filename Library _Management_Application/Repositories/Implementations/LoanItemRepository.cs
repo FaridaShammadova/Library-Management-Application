@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,16 +19,24 @@ namespace Library__Management_Application.Repositories.Implementations
             context = new AppDbContext();
         }
 
-        public LoanItem? GetLoanItemById(int id)
+        public LoanItem? GetLoanItemByIdWithBook(int id)
             => context.LoanItems
             .Include(x => x.Book)
+            .FirstOrDefault(x => x.Id == id);
+
+        public LoanItem? GetLoanItemByIdWithLoan(int id)
+            => context.LoanItems
             .Include(x => x.Loan)
             .FirstOrDefault(x => x.Id == id);
 
-        public List<LoanItem> GetLoanItemAll(int id)
+        public List<LoanItem> GetLoanItemAllWithBook(int id)
             => context.LoanItems
             .Include(x => x.Book)
-            .Include(x=> x.Loan)
+            .ToList();
+
+        public List<LoanItem> GetLoanItemAllWithLoan(int id)
+            => context.LoanItems
+            .Include(x => x.Loan)
             .ToList();
     }
 }

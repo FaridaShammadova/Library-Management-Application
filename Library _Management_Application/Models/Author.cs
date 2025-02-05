@@ -9,6 +9,6 @@ namespace Library__Management_Application.Models
     public class Author : BaseEntity
     {
         public string? Name { get; set; }
-        public List<Book>? Books { get; set; }
+        public List<AuthorBook>? AuthorBooks { get; set; }
     }
 }

@@ -13,6 +13,5 @@ namespace Library__Management_Application.DTOs.BookDTOs
         public string? Description { get; set; }
         public int PublishedYear { get; set; }
         public DateTime UpdateDate { get; set; }
-        //public List<Author>? Authors { get; set; }
     }
 }

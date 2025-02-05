@@ -19,15 +19,23 @@ namespace Library__Management_Application.Repositories.Implementations
             context = new AppDbContext();
         }
 
-        public Loan? GetLoanById(int id)
+        public Loan? GetLoanByIdWithBorrower(int id)
             => context.Loans
             .Include(x => x.Borrower)
+            .FirstOrDefault(x => x.Id == id);
+
+        public Loan? GetLoanByIdWithLoanItems(int id)
+            => context.Loans
             .Include(x => x.LoanItems)
             .FirstOrDefault(x => x.Id == id);
 
-        public List<Loan> GetLoanAll(int id)
+        public List<Loan> GetLoanAllWithBorrower(int id)
             => context.Loans
             .Include(x => x.Borrower)
+            .ToList();
+
+        public List<Loan> GetLoanAllWithLoanItems(int id)
+            => context.Loans
             .Include(x => x.LoanItems)
             .ToList();
     }

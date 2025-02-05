@@ -20,12 +20,14 @@ namespace Library__Management_Application.Repositories.Implementations
 
         public Book? GetBookById(int id)
             => context.Books
-            .Include(x => x.Authors)
+            .Include(x => x.AuthorBooks)
+            .ThenInclude(x => x.Author)
             .FirstOrDefault(x => x.Id == id);
 
         public List<Book> GetBookAll()
             => context.Books
-            .Include(x => x.Authors)
+            .Include(x => x.AuthorBooks)
+            .ThenInclude(x => x.Author)
             .ToList();
     }
 }

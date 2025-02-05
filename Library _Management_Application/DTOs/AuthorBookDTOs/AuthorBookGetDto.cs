@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Library__Management_Application.Models;
 
-namespace Library__Management_Application.DTOs.BookDTOs
+namespace Library__Management_Application.DTOs.AuthorBookDTOs
 {
-    public class BookCreateDto
+    public class AuthorBookGetDto
     {
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public int PublishedYear { get; set; }
+        public int Id { get; set; }
+        public Author? Author { get; set; }
+        public Book? Book { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

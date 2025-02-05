@@ -9,6 +9,7 @@ using Library__Management_Application.PB503Exceptions;
 using Library__Management_Application.Repositories.Implementations;
 using Library__Management_Application.Repositories.Interfaces;
 using Library__Management_Application.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library__Management_Application.Services.Implementations
 {
@@ -32,7 +33,6 @@ namespace Library__Management_Application.Services.Implementations
                 IsDeleted = false,
                 CreateDate = DateTime.UtcNow.AddHours(4),
                 UpdateDate = DateTime.UtcNow.AddHours(4),
-                //Authors = bookCreateDto.Authors
             };
 
             bookRepository.Create(book);
@@ -73,7 +73,7 @@ namespace Library__Management_Application.Services.Implementations
                 Title = x.Title,
                 Description = x.Description,
                 PublishedYear = x.PublishedYear,
-                //Authors = x.Authors
+                AuthorBooks = x.AuthorBooks
             }).ToList();
 
 
@@ -89,7 +89,7 @@ namespace Library__Management_Application.Services.Implementations
                 Title = data.Title,
                 Description = data.Description,
                 PublishedYear = data.PublishedYear,
-                //Authors = data.Authors
+                AuthorBooks = data.AuthorBooks
             };
 
             return bookGetDto;
@@ -105,7 +105,6 @@ namespace Library__Management_Application.Services.Implementations
             data.Description = bookUpdateDto.Description;
             data.PublishedYear = bookUpdateDto.PublishedYear;
             data.UpdateDate = bookUpdateDto.UpdateDate;
-            //data.Authors = bookUpdateDto.Authors;
 
             int result = bookRepository.Commit();
 

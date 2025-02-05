@@ -91,7 +91,6 @@ namespace Library__Management_Application.Services.Implementations
 
             data.Name = authorUpdateDto.Name;
             data.UpdateDate = authorUpdateDto.UpdateDate;
-            data.Books = authorUpdateDto.Books;
             int result = authorRepository.Commit();
 
             if (result > 0)

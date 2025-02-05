@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Library__Management_Application.DTOs.AuthorBookDTOs;
 using Library__Management_Application.DTOs.AuthorDTOs;
 using Library__Management_Application.DTOs.BookDTOs;
 using Library__Management_Application.DTOs.BorrowerDTOs;
@@ -13,9 +14,103 @@ namespace Library__Management_Application
     {
         static void Main(string[] args)
         {
-            IAuthorService authorService = new AuthorService();
-            IBookService bookService = new BookService();
             IBorrowerService borrowerService = new BorrowerService();
+
+            bool check = false;
+
+            while (!check)
+            {
+                Console.Clear();
+
+                Console.WriteLine("1 - Author Menu");
+                Console.WriteLine("2 - Book Menu");
+                Console.WriteLine("3 - Borrower Menu");
+                Console.WriteLine("4 - Author-book Menu");
+                //Console.WriteLine("5 - Borrower Book");
+                //Console.WriteLine("6 - Return Book");
+                //Console.WriteLine("7 - Return the most borrowed book");
+                //Console.WriteLine("8 - Return borrowers who delayed the book come");
+                //Console.WriteLine("9 - Return borrowers who borrwed books");
+                //Console.WriteLine("10 - Filter books by title");
+                //Console.WriteLine("11 - Filter books by author");
+                //Console.WriteLine("0 - Exit");
+
+                CheckInputCase:
+                Console.WriteLine("\nEnter input:");
+                int input = 0;
+                string? value = Console.ReadLine();
+                try
+                {
+                    input = CheckInput(value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    goto CheckInputCase;
+                }
+
+                switch (input)
+                {
+                    case 1:
+                        AuthorMenu();
+                        break;
+
+                    case 2:
+                        BookMenu();
+                        break;
+
+                    case 3:
+                        BorrowerMenu();
+                        break;
+
+                    case 4:
+                        AuthorBookMenu();
+                        break;
+
+                    case 5:
+                        
+                        break;
+
+                    case 6:
+                        
+                        break;
+
+                    case 7:
+                        
+                        break;
+
+                    case 8:
+                        
+                        break;
+
+                    case 9:
+                        
+                        break;
+
+                    case 10:
+                        
+                        break;
+
+                    case 11:
+
+                        break;
+
+                    case 0:
+                        check = true;
+                        Console.WriteLine("Process has ended.");
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+
+        static void AuthorMenu()
+        {
+            IAuthorService authorService = new AuthorService();
 
             bool check = false;
 
@@ -29,24 +124,9 @@ namespace Library__Management_Application
                 Console.WriteLine("3 - Get all authors");
                 Console.WriteLine("4 - Update author");
                 Console.WriteLine("5 - Delete author");
+                Console.WriteLine("0 - Return Main Menu");
 
-                Console.WriteLine("\nBook menu:");
-                Console.WriteLine("6 - Create book");
-                Console.WriteLine("7 - Get book by id");
-                Console.WriteLine("8 - Get all books");
-                Console.WriteLine("9 - Update book");
-                Console.WriteLine("10 - Delete book");
-
-                Console.WriteLine("\nBorrower menu:");
-                Console.WriteLine("11 - Create borrower");
-                Console.WriteLine("12 - Get borrower by id");
-                Console.WriteLine("13 - Get all borrowers");
-                Console.WriteLine("14 - Update borrower");
-                Console.WriteLine("15 - Delete borrower");
-
-                Console.WriteLine("0 - Exit");
-
-                CheckInputCase:
+            CheckInputCase:
                 Console.WriteLine("\nEnter input:");
                 int input = 0;
                 string? value = Console.ReadLine();
@@ -203,7 +283,52 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 6:
+                    case 0:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+
+        static void BookMenu()
+        {
+            IBookService bookService = new BookService();
+
+            bool check = false;
+
+            while (!check)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\nBook menu:");
+                Console.WriteLine("1 - Create book");
+                Console.WriteLine("2 - Get book by id");
+                Console.WriteLine("3 - Get all books");
+                Console.WriteLine("4 - Update book");
+                Console.WriteLine("5 - Delete book");
+                Console.WriteLine("0 - Return Main Menu");
+
+            CheckInputCase:
+                Console.WriteLine("\nEnter input:");
+                int input = 0;
+                string? value = Console.ReadLine();
+                try
+                {
+                    input = CheckInput(value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    goto CheckInputCase;
+                }
+
+                switch (input)
+                {
+                    case 1:
                     BookNameCreateCase:
                         Console.WriteLine("\nEnter book title:");
                         string? bookTitle = Console.ReadLine();
@@ -224,7 +349,7 @@ namespace Library__Management_Application
 
                         try
                         {
-                            CheckString(bookDescription);
+                            CheckDescription(bookDescription);
                         }
                         catch (Exception ex)
                         {
@@ -239,59 +364,13 @@ namespace Library__Management_Application
 
                         try
                         {
-                            bookPublishedYear = CheckInt(bookPublishedYearInput);
+                            bookPublishedYear = CheckPublishedYear(bookPublishedYearInput);
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
                             goto BookPublishedYearCreateCase;
                         }
-
-                        //Console.WriteLine("Choose authors:");
-                        //foreach (var authorItem in authorService.GetAll())
-                        //{
-                        //    Console.WriteLine($"{authorItem.Id} - {authorItem.Name}");
-                        //}
-
-                        //Console.WriteLine("Enter author ids(separate ids with commas):");
-                        //int chooseAuthorId = 0;
-                        //string? chooseAuthorIdInput = Console.ReadLine();
-
-                        //List<int> selectedAuthorIds = new List<int>();
-                        //try
-                        //{
-                        //    chooseAuthorId = CheckInt(chooseAuthorIdInput);
-                        //    selectedAuthorIds = chooseAuthorIdInput
-                        //        .Split(',')
-                        //        .Select(id => id.Trim())
-                        //        .Where(id => !string.IsNullOrWhiteSpace(id))
-                        //        .Select(id => int.Parse(id))
-                        //        .ToList();
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Console.WriteLine(ex.Message);
-                        //}
-
-                        //var selectedAuthors = new List<Author>();
-                        //foreach (var selectedAuthorId in selectedAuthorIds)
-                        //{
-                        //    var selectedAuthorGetDto = authorService.GetById(selectedAuthorId);
-                        //    Author selectedAuthor = new Author()
-                        //    {
-                        //        Id = selectedAuthorGetDto.Id,
-                        //        Name = selectedAuthorGetDto.Name
-                        //    };
-
-                        //    if (selectedAuthor != null)
-                        //    {
-                        //        selectedAuthors.Add(selectedAuthor);
-                        //    }
-                        //    else
-                        //    {
-                        //        Console.WriteLine($"Author with ID {selectedAuthorId} not found.");
-                        //    }
-                        //}
 
                         try
                         {
@@ -300,8 +379,7 @@ namespace Library__Management_Application
                                 Title = bookTitle,
                                 Description = bookDescription,
                                 PublishedYear = bookPublishedYear,
-                                IsDeleted = false,
-                                //Authors = selectedAuthors 
+                                IsDeleted = false
                             });
                         }
                         catch (Exception ex)
@@ -310,7 +388,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 7:
+                    case 2:
                     BookGetByIdCase:
                         Console.WriteLine("\nEnter id:");
                         int bookId = 0;
@@ -329,16 +407,26 @@ namespace Library__Management_Application
                         try
                         {
                             var book = bookService.GetById(bookId);
-                            Console.WriteLine($"{book.Id} - {book.Title} - {book.Description} - {book.PublishedYear}");
+                            if(book.AuthorBooks is null)
+                            {
+                                Console.WriteLine($"{book.Id} - {book.Title} - {book.Description} - {book.PublishedYear}");
+                                Console.WriteLine("\nThe book has no authors.\n");
+                            }
+                            else
+                            {
+                                foreach (var author in book.AuthorBooks)
+                                {
+                                    Console.WriteLine($"{book.Id} - {book.Title} - {book.Description} - {book.PublishedYear} - {author.Author.Name}");
+                                }
+                            }
                         }
-
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
                         }
                         break;
 
-                    case 8:
+                    case 3:
                         List<BookGetDto> books = bookService.GetAll();
                         if (books.Count == 0)
                         {
@@ -348,12 +436,23 @@ namespace Library__Management_Application
                         {
                             foreach (var bookItem in books)
                             {
-                                Console.WriteLine($"{bookItem.Id} - {bookItem.Title} - {bookItem.Description} - {bookItem.PublishedYear}");
+                                if(bookItem.AuthorBooks is null)
+                                {
+                                    Console.WriteLine($"{bookItem.Id} - {bookItem.Title} - {bookItem.Description} - {bookItem.PublishedYear}");
+                                    Console.WriteLine("\nThe book has no authors.\n");
+                                }
+                                else
+                                {
+                                    foreach (var author in bookItem.AuthorBooks)
+                                    {
+                                        Console.WriteLine($"{bookItem.Id} - {bookItem.Title} - {bookItem.Description} - {bookItem.PublishedYear} - {author.Author.Name}");
+                                    }
+                                }
                             }
                         }
                         break;
 
-                    case 9:
+                    case 4:
                     BookUpdateCase:
                         Console.WriteLine("\nEnter id:");
                         int updateBookId = 0;
@@ -389,7 +488,7 @@ namespace Library__Management_Application
 
                         try
                         {
-                            CheckString(updateBookDescription);
+                            CheckDescription(updateBookDescription);
                         }
                         catch (Exception ex)
                         {
@@ -404,7 +503,7 @@ namespace Library__Management_Application
 
                         try
                         {
-                            updateBookPublishedYear = CheckInt(updateBookPublishedYearInput);
+                            updateBookPublishedYear = CheckPublishedYear(updateBookPublishedYearInput);
                         }
                         catch (Exception ex)
                         {
@@ -428,7 +527,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 10:
+                    case 5:
                     BookDeleteCase:
                         Console.WriteLine("\nEnter id:");
                         int deleteBookId = 0;
@@ -454,7 +553,52 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 11:
+                    case 0:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+
+        static void BorrowerMenu()
+        {
+            IBorrowerService borrowerService = new BorrowerService();
+
+            bool check = false;
+
+            while (!check)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\nBorrower menu:");
+                Console.WriteLine("1 - Create borrower");
+                Console.WriteLine("2 - Get borrower by id");
+                Console.WriteLine("3 - Get all borrowers");
+                Console.WriteLine("4 - Update borrower");
+                Console.WriteLine("5 - Delete borrower");
+                Console.WriteLine("0 - Return Main Menu");
+
+            CheckInputCase:
+                Console.WriteLine("\nEnter input:");
+                int input = 0;
+                string? value = Console.ReadLine();
+                try
+                {
+                    input = CheckInput(value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    goto CheckInputCase;
+                }
+
+                switch (input)
+                {
+                    case 1:
                     BorrowerNameCreateCase:
                         Console.WriteLine("\nEnter borrower name:");
                         string? borrowerName = Console.ReadLine();
@@ -498,7 +642,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 12:
+                    case 2:
                     BorrowerGetByIdCase:
                         Console.WriteLine("\nEnter id:");
                         int borrowerId = 0;
@@ -525,7 +669,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 13:
+                    case 3:
                         List<BorrowerGetDto> borrowers = borrowerService.GetAll();
                         if (borrowers.Count == 0)
                         {
@@ -540,7 +684,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 14:
+                    case 4:
                     BorrowerUpdateCase:
                         Console.WriteLine("\nEnter id:");
                         int updateBorrowerId = 0;
@@ -599,7 +743,7 @@ namespace Library__Management_Application
                         }
                         break;
 
-                    case 15:
+                    case 5:
                     BorrowerDeleteCase:
                         Console.WriteLine("\nEnter id:");
                         int deleteBorrowerId = 0;
@@ -624,11 +768,210 @@ namespace Library__Management_Application
                             Console.WriteLine(ex.Message);
                         }
                         break;
-                }
 
+                    case 0:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        break;
+                }
                 Console.ReadKey();
             }
         }
+
+        static void AuthorBookMenu()
+        {
+            IAuthorBookService authorBookService = new AuthorBookService();
+            IAuthorService authorService = new AuthorService();
+            IBookService bookService = new BookService();
+
+            bool check = false;
+
+            while (!check)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Author menu:");
+                Console.WriteLine("1 - Create author-book relation");
+                Console.WriteLine("2 - Update author-book relation");
+                Console.WriteLine("3 - Delete author-book relation");
+                Console.WriteLine("0 - Return Main Menu");
+
+            CheckInputCase:
+                Console.WriteLine("\nEnter input:");
+                int input = 0;
+                string? value = Console.ReadLine();
+                try
+                {
+                    input = CheckInput(value);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    goto CheckInputCase;
+                }
+
+                switch (input)
+                {
+                    case 1:
+                        Console.WriteLine("\nChoose author and book ids:");
+                        Console.WriteLine("\nAuthors:");
+
+                        foreach (var author in authorService.GetAll())
+                        {
+                            Console.WriteLine($"{author.Id} - {author.Name}");
+                        }
+                        Console.WriteLine("\nBooks:");
+
+                        foreach (var book in bookService.GetAll())
+                        {
+                            Console.WriteLine($"{book.Id} - {book.Title} - {book.Description} - {book.PublishedYear}");
+                        }
+
+                    AuthorIdCreateCase:
+                        Console.WriteLine("\nEnter author id:");
+                        int authorId = 0;
+                        string? authorIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            authorId = CheckInt(authorIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto AuthorIdCreateCase;
+                        }
+
+                    BookIdCreateCase:
+                        Console.WriteLine("\nEnter book id:");
+                        int bookId = 0;
+                        string? bookIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            bookId = CheckInt(bookIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto BookIdCreateCase;
+                        }
+
+                        try
+                        {
+                            authorBookService.Create(new AuthorBookCreateDto()
+                            {
+                                AuthorId = authorId,
+                                BookId = bookId,
+                                IsDeleted = false
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        break;
+
+                    case 2:
+                    AuthorBookUpdateCase:
+                        Console.WriteLine("\nEnter id:");
+                        int updateAuthorBookId = 0;
+                        string? updateAuthorBookIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            updateAuthorBookId = CheckInt(updateAuthorBookIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto AuthorBookUpdateCase;
+                        }
+
+                    AuthorIdUpdateCase:
+                        Console.WriteLine("\nEnter new author id:");
+                        int updateAuthorId = 0;
+                        string? updateAuthorIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            updateAuthorId = CheckInt(updateAuthorIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto AuthorIdUpdateCase;
+                        }
+
+                    BookIdUpdateCase:
+                        Console.WriteLine("\nEnter new book id:");
+                        int updateBookId = 0;
+                        string? updateBookIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            updateBookId = CheckInt(updateBookIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto BookIdUpdateCase;
+                        }
+
+                        try
+                        {
+                            authorBookService.Update(updateAuthorBookId, new AuthorBookUpdateDto()
+                            {
+                                AuthorId = updateAuthorId,
+                                BookId = updateBookId,
+                                UpdateDate = DateTime.UtcNow.AddHours(4)
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        break;
+
+                    case 5:
+                    AuthorBookDeleteCase:
+                        Console.WriteLine("\nEnter id:");
+                        int deleteAuthorBookId = 0;
+                        string? deleteAuthorBookIdInput = Console.ReadLine();
+
+                        try
+                        {
+                            deleteAuthorBookId = CheckInt(deleteAuthorBookIdInput);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            goto AuthorBookDeleteCase;
+                        }
+
+                        try
+                        {
+                            authorBookService.Delete(deleteAuthorBookId);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                        break;
+
+                    case 0:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        break;
+                }
+                Console.ReadKey();
+            }
+        }
+
         static int CheckInput(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) throw new InvalidException("Input cannot be null or empty.");
@@ -636,8 +979,6 @@ namespace Library__Management_Application
             if (!int.TryParse(value, out int number)) throw new InvalidException("Input must be a valid number.");
 
             if (number < 0) throw new InvalidException("Input cannot be negative.");
-
-            //if(number > ) throw new InvalidException("Input cannot be must than .");
             return number;
         }
 
@@ -651,12 +992,32 @@ namespace Library__Management_Application
 
             if (number == 0) throw new InvalidException("Value cannot be 0.");
             return number;
-
         }
 
         static void CheckString(string value)
         {
             if(string.IsNullOrWhiteSpace(value)) throw new InvalidException("Value cannot be null or empty.");
+        }
+
+        static void CheckDescription(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new InvalidException("Value cannot be null or empty.");
+
+            if (int.TryParse(value, out _)) throw new InvalidException("Description cannot contain only numbers.");
+        }
+
+        static int CheckPublishedYear(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new InvalidException("Value cannot be null or empty.");
+
+            if (!int.TryParse(value, out int number)) throw new InvalidException("Value must be a valid number.");
+
+            if (number < 0) throw new InvalidException("Value cannot be negative.");
+
+            if (number == 0) throw new InvalidException("Value cannot be 0.");
+
+            if (number > 2025) throw new InvalidException("Value cannot be more than 2025.");
+            return number;
         }
     }
 }
