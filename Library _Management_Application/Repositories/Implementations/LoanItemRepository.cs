@@ -19,24 +19,18 @@ namespace Library__Management_Application.Repositories.Implementations
             context = new AppDbContext();
         }
 
-        public LoanItem? GetLoanItemByIdWithBook(int id)
+        public LoanItem? GetLoanItemById(int id)
             => context.LoanItems
             .Include(x => x.Book)
-            .FirstOrDefault(x => x.Id == id);
-
-        public LoanItem? GetLoanItemByIdWithLoan(int id)
-            => context.LoanItems
             .Include(x => x.Loan)
+            .Where(x => x.IsDeleted == false)
             .FirstOrDefault(x => x.Id == id);
 
-        public List<LoanItem> GetLoanItemAllWithBook(int id)
+        public List<LoanItem>? GetLoanItemAll()
             => context.LoanItems
             .Include(x => x.Book)
-            .ToList();
-
-        public List<LoanItem> GetLoanItemAllWithLoan(int id)
-            => context.LoanItems
             .Include(x => x.Loan)
+            .Where(x => x.IsDeleted == false)
             .ToList();
     }
 }

@@ -47,7 +47,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var loanItem = loanItemRepository.GetById(id);
+            var loanItem = loanItemRepository.GetLoanItemById(id);
             if (loanItem is null) throw new NotFoundException("Loan item not found.");
 
             loanItem.IsDeleted = true;
@@ -64,7 +64,7 @@ namespace Library__Management_Application.Services.Implementations
         }
 
         public List<LoanItemGetDto> GetAll()
-            => loanItemRepository.GetAll().Select(x => new LoanItemGetDto()
+            => loanItemRepository.GetLoanItemAll().Select(x => new LoanItemGetDto()
             {
                 Id = x.Id,
                 Book = x.Book,
@@ -73,7 +73,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public LoanItemGetDto GetById(int id)
         {
-            var data = loanItemRepository.GetById(id);
+            var data = loanItemRepository.GetLoanItemById(id);
             if (data is null) throw new NotFoundException("Loan item not found.");
 
             LoanItemGetDto loanItemGetDto = new LoanItemGetDto()
@@ -89,7 +89,7 @@ namespace Library__Management_Application.Services.Implementations
         public void Update(int id, LoanItemUpdateDto loanItemUpdateDto)
         {
             if (loanItemUpdateDto is null) throw new NotFoundException("Loan item not found.");
-            var data = loanItemRepository.GetById(id);
+            var data = loanItemRepository.GetLoanItemById(id);
             if (data is null) throw new NotFoundException("Loan item not found.");
 
             data.BookId = loanItemUpdateDto.BookId;

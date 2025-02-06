@@ -74,7 +74,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public BorrowerGetDto GetById(int id)
         {
-            var data = borrowerRepository.GetById(id);
+            var data = borrowerRepository.GetBorrowerById(id);
             if (data is null) throw new NotFoundException("Borrower not found.");
 
             BorrowerGetDto borrowerGetDto = new BorrowerGetDto()

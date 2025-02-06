@@ -9,5 +9,7 @@ namespace Library__Management_Application.Repositories.Interfaces
 {
     public interface ILoanRepository : IGenericRepository<Loan>
     {
+        public Loan? GetLoanById(int id);
+        public List<Loan>? GetLoanAll();
     }
 }

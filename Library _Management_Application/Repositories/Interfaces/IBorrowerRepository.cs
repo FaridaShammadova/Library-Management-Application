@@ -9,5 +9,7 @@ namespace Library__Management_Application.Repositories.Interfaces
 {
     public interface IBorrowerRepository : IGenericRepository<Borrower>
     {
+        public Borrower? GetBorrowerById(int id);
+        public List<Borrower> GetBorrowerAll();
     }
 }

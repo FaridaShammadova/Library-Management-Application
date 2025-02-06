@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library__Management_Application.Data;
+using Library__Management_Application.DTOs.AuthorDTOs;
+using Library__Management_Application.DTOs.BookDTOs;
 using Library__Management_Application.Models;
 using Library__Management_Application.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +22,34 @@ namespace Library__Management_Application.Repositories.Implementations
 
         public Book? GetBookById(int id)
             => context.Books
-            .Include(x => x.AuthorBooks)
-            .ThenInclude(x => x.Author)
+            .Include(x => x.Authors)
+            .Where(x => x.IsDeleted == false)
             .FirstOrDefault(x => x.Id == id);
 
         public List<Book> GetBookAll()
             => context.Books
-            .Include(x => x.AuthorBooks)
-            .ThenInclude(x => x.Author)
+            .Include(x => x.Authors)
+            .Where(x => x.IsDeleted == false)
             .ToList();
+
+        public List<BookGetDto> FilterByTitle(string title)
+            => context.Books
+            .Where(b => b.Title.Contains(title))
+            .Select(b => new BookGetDto
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Description = b.Description,
+                PublishedYear = b.PublishedYear
+            }).ToList();
+
+        //public List<BookGetDto> FilterBooksByAuthor(string authorName)
+        //    => context.Books
+        //    .Where(a => a..Contains(authorName))
+        //    .Select(a => new AuthorGetDto
+        //    {
+        //        Id = a.Id,
+        //        Name = a.Name
+        //    }).ToList();
     }
 }

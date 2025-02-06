@@ -21,11 +21,13 @@ namespace Library__Management_Application.Repositories.Implementations
         public Borrower? GetBorrowerById(int id)
             => context.Borrowers
             .Include(x => x.Loans)
+            .Where(x => x.IsDeleted == false)
             .FirstOrDefault(x => x.Id == id);
 
         public List<Borrower> GetBorrowerAll()
             => context.Borrowers
             .Include(x => x.Loans)
+            .Where(x => x.IsDeleted == false)
             .ToList();
     }
 }

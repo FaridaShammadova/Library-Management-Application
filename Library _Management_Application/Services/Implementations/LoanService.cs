@@ -49,7 +49,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var loan = loanRepository.GetById(id);
+            var loan = loanRepository.GetLoanById(id);
             if (loan is null) throw new NotFoundException("Loan not found.");
 
             loan.IsDeleted = true;
@@ -66,7 +66,7 @@ namespace Library__Management_Application.Services.Implementations
         }
 
         public List<LoanGetDto> GetAll()
-            => loanRepository.GetAll().Select(x => new LoanGetDto()
+            => loanRepository.GetLoanAll().Select(x => new LoanGetDto()
             {
                 Id = x.Id,
                 LoanDate = DateTime.UtcNow.AddHours(4),
@@ -76,7 +76,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public LoanGetDto GetById(int id)
         {
-            var data = loanRepository.GetById(id);
+            var data = loanRepository.GetLoanById(id);
             if (data is null) throw new NotFoundException("Loan not found.");
 
             LoanGetDto loanGetDto = new LoanGetDto()
@@ -93,7 +93,7 @@ namespace Library__Management_Application.Services.Implementations
         public void Update(int id, LoanUpdateDto loanUpdateDto)
         {
             if (loanUpdateDto is null) throw new NotFoundException("Loan not found.");
-            var data = loanRepository.GetById(id);
+            var data = loanRepository.GetLoanById(id);
             if (data is null) throw new NotFoundException("Loan not found.");
 
             data.LoanDate = loanUpdateDto.LoanDate;

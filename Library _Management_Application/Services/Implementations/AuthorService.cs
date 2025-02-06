@@ -50,6 +50,7 @@ namespace Library__Management_Application.Services.Implementations
         {
             var author = authorRepository.GetById(id);
             if (author is null) throw new NotFoundException("Author not found.");
+
             author.IsDeleted = true;
             int result = authorRepository.Commit();
 
@@ -64,7 +65,8 @@ namespace Library__Management_Application.Services.Implementations
         }
 
         public List<AuthorGetDto> GetAll()
-            => authorRepository.GetAll().Select(x => new AuthorGetDto()
+            => authorRepository.GetAll()
+            .Select(x => new AuthorGetDto()
             {
                 Id = x.Id,
                 Name = x.Name
@@ -72,7 +74,7 @@ namespace Library__Management_Application.Services.Implementations
 
         public AuthorGetDto GetById(int id)
         {
-            var data = authorRepository.GetById(id);
+            var data = authorRepository.GetAuthorById(id);
             if (data is null) throw new NotFoundException("Author not found.");
 
             var authorGetDto = new AuthorGetDto()
@@ -91,6 +93,7 @@ namespace Library__Management_Application.Services.Implementations
 
             data.Name = authorUpdateDto.Name;
             data.UpdateDate = authorUpdateDto.UpdateDate;
+
             int result = authorRepository.Commit();
 
             if (result > 0)

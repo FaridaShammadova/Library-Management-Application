@@ -12,6 +12,6 @@ namespace Library__Management_Application.Models
         public string? Title { get; set; }
         public string? Description { get; set; }
         public int PublishedYear { get; set; }
-        public List<AuthorBook>? AuthorBooks { get; set; }
+        public List<Author>? Authors { get; set; }
     }
 }

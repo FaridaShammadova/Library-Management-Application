@@ -11,6 +11,5 @@ namespace Library__Management_Application.DTOs.AuthorDTOs
     {
         public string? Name { get; set; }
         public DateTime UpdateDate { get; set; }
-        public List<Book>? Books { get; set; }
     }
 }

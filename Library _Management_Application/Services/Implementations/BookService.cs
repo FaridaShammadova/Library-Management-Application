@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library__Management_Application.DTOs.AuthorDTOs;
 using Library__Management_Application.DTOs.BookDTOs;
 using Library__Management_Application.Models;
 using Library__Management_Application.PB503Exceptions;
@@ -33,18 +34,30 @@ namespace Library__Management_Application.Services.Implementations
                 IsDeleted = false,
                 CreateDate = DateTime.UtcNow.AddHours(4),
                 UpdateDate = DateTime.UtcNow.AddHours(4),
+                Authors = bookCreateDto.Authors
             };
 
-            bookRepository.Create(book);
-            int result = bookRepository.Commit();
+            try
+            {
+                bookRepository.Create(book);
+                int result = bookRepository.Commit();
 
-            if (result > 0)
-            {
-                Console.WriteLine($"{result} rows created.");
+                if (result > 0)
+                {
+                    Console.WriteLine($"{result} rows created.");
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Error");
+                Console.WriteLine($"Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
             }
         }
 
@@ -72,15 +85,14 @@ namespace Library__Management_Application.Services.Implementations
                 Id = x.Id,
                 Title = x.Title,
                 Description = x.Description,
-                PublishedYear = x.PublishedYear,
-                AuthorBooks = x.AuthorBooks
+                PublishedYear = x.PublishedYear
             }).ToList();
 
 
 
         public BookGetDto GetById(int id)
         {
-            var data = bookRepository.GetById(id);
+            var data = bookRepository.GetBookById(id);
             if (data is null) throw new NotFoundException("Book not found.");
 
             BookGetDto bookGetDto = new BookGetDto()
@@ -88,8 +100,7 @@ namespace Library__Management_Application.Services.Implementations
                 Id = data.Id,
                 Title = data.Title,
                 Description = data.Description,
-                PublishedYear = data.PublishedYear,
-                AuthorBooks = data.AuthorBooks
+                PublishedYear = data.PublishedYear
             };
 
             return bookGetDto;
@@ -117,5 +128,11 @@ namespace Library__Management_Application.Services.Implementations
                 Console.WriteLine("Error");
             }
         }
+
+        public List<BookGetDto> FilterByTitle(string title)
+            => bookRepository.FilterByTitle(title);
+
+        //public List<BookGetDto> FilterBooksByAuthor(string authorName)
+        //    => bookRepository.FilterBooksByAuthor(authorName);
     }
 }
