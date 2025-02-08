@@ -42,14 +42,5 @@ namespace Library__Management_Application.Repositories.Implementations
                 Description = b.Description,
                 PublishedYear = b.PublishedYear
             }).ToList();
-
-        //public List<BookGetDto> FilterBooksByAuthor(string authorName)
-        //    => context.Books
-        //    .Where(a => a..Contains(authorName))
-        //    .Select(a => new AuthorGetDto
-        //    {
-        //        Id = a.Id,
-        //        Name = a.Name
-        //    }).ToList();
     }
 }

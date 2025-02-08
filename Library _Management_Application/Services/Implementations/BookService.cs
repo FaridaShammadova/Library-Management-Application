@@ -131,8 +131,5 @@ namespace Library__Management_Application.Services.Implementations
 
         public List<BookGetDto> FilterByTitle(string title)
             => bookRepository.FilterByTitle(title);
-
-        //public List<BookGetDto> FilterBooksByAuthor(string authorName)
-        //    => bookRepository.FilterBooksByAuthor(authorName);
     }
 }

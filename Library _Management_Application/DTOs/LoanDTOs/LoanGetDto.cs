@@ -13,6 +13,6 @@ namespace Library__Management_Application.DTOs.LoanDTOs
         public DateTime LoanDate { get; set; }
         public DateTime MustReturnDate { get; set; }
         public DateTime ReturnDate { get; set; }
-        //public Borrower? Borrower { get; set; }
+        public int BorrowerId { get; set; }
     }
 }

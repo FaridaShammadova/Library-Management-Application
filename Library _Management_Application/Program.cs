@@ -8,6 +8,7 @@ using Library__Management_Application.PB503Exceptions;
 using Library__Management_Application.Services.Implementations;
 using Library__Management_Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Library__Management_Application
 {
@@ -27,11 +28,11 @@ namespace Library__Management_Application
                 Console.WriteLine("2 - Book Menu");
                 Console.WriteLine("3 - Borrower Menu");
                 //Console.WriteLine("4 - Borrower Book");
-                //Console.WriteLine("5 - Return Book");
+                Console.WriteLine("5 - Return Book");
                 //Console.WriteLine("6 - Return the most borrowed book");
                 //Console.WriteLine("7 - Return borrowers who delayed the book come");
                 //Console.WriteLine("8 - Return borrowers who borrwed books");
-                //Console.WriteLine("9 - Filter books by title");
+                Console.WriteLine("9 - Filter books by title");
                 //Console.WriteLine("10 - Filter books by author");
                 //Console.WriteLine("0 - Exit");
 
@@ -64,23 +65,19 @@ namespace Library__Management_Application
                         break;
 
                     case 4:
-
                         break;
 
                     case 5:
-                        
+                        ReturnBook();
                         break;
 
                     case 6:
-                        
                         break;
 
                     case 7:
-                        
                         break;
 
                     case 8:
-                        
                         break;
 
                     case 9:
@@ -106,7 +103,6 @@ namespace Library__Management_Application
                                 }
                             else
                             {
-                                Console.WriteLine($"\nBooks found for title '{title}':");
                                 foreach (var bookItem in filteredBooks)
                                 {
                                         Console.WriteLine($"{bookItem.Id} - {bookItem.Title} - {bookItem.Description} - {bookItem.PublishedYear}");
@@ -120,41 +116,6 @@ namespace Library__Management_Application
                         break;
 
                     case 10:
-                        //Console.WriteLine("Enter author name:");
-                        //string? authorName = Console.ReadLine();
-
-                        //try
-                        //{
-                        //    CheckString(authorName);
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Console.WriteLine(ex.Message);
-                        //}
-
-                        //var filteredBooksByAuthor = FilterBooksByAuthor(authorName);
-
-                        //try
-                        //{
-                        //    if (filteredBooksByAuthor.Count == 0)
-                        //    {
-                        //        Console.WriteLine($"\nNo books found with the author name '{authorName}'.");
-                        //    }
-                        //    else
-                        //    {
-                        //        Console.WriteLine($"\nBooks found for author name '{authorName}':");
-                        //        foreach (var bookItem in filteredBooksByAuthor)
-                        //        {
-                        //            Console.WriteLine($"{bookItem.Id} - {bookItem.Title} - {bookItem.Description} - {bookItem.PublishedYear}");
-                        //        }
-                        //    }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Console.WriteLine($"\n{ex.Message}");
-                        //}
-
-                        //bunu da yazammadım(
                         break;
 
                     case 0:
@@ -887,9 +848,6 @@ namespace Library__Management_Application
             }
         }
 
-        
-
-
         static List<BookGetDto> FilterBooksByTitle(string title)
         {
             IBookService bookService = new BookService();
@@ -897,12 +855,52 @@ namespace Library__Management_Application
             return books;
         }
 
-        //static List<BookGetDto> FilterBooksByAuthor(string authorName)
-        //{
-        //    IAuthorService authorService = new AuthorService();
-        //    List<BookGetDto> books = authorService.FilterBooksByAuthor(authorName);
-        //    return books;
-        //}
+        static void ReturnBook()
+        {
+            ILoanService loanService = new LoanService();
+            IBorrowerService borrowerService = new BorrowerService();
+
+            Console.WriteLine("Choose borrower:");
+            
+            if(borrowerService.GetAll().Count == 0)
+            {
+                Console.WriteLine("No borrowers found.");
+                return;
+            }
+            else
+            {
+                foreach (var borrower in borrowerService.GetAll())
+                {
+                    Console.WriteLine($"{borrower.Id} - {borrower.Name} - {borrower.Email}");
+                }
+            }
+
+        CheckBorrowerIdCase:
+            Console.WriteLine("Enter borrower id:");
+            int borrowerId = 0;
+            string? borrowerIdInput = Console.ReadLine();
+
+            try
+            {
+                borrowerId = CheckInt(borrowerIdInput);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto CheckBorrowerIdCase;
+            }
+
+            var loan = loanService.GetAll().FirstOrDefault(l => l.BorrowerId == borrowerId);
+            if (loan != null)
+            {
+                loan.ReturnDate = DateTime.Now;
+                Console.WriteLine($"The book was returned. Date: {loan.ReturnDate}");
+            }
+            else
+            {
+                Console.WriteLine("No book found to return.");
+            }
+        }
 
         static int CheckInput(string value)
         {

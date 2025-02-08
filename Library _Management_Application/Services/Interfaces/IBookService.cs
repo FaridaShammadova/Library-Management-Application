@@ -17,6 +17,5 @@ namespace Library__Management_Application.Services.Interfaces
         void Update(int id, BookUpdateDto bookUpdateDto);
         void Delete(int id);
         public List<BookGetDto> FilterByTitle(string title);
-        //public List<BookGetDto> FilterBooksByAuthor(string authorName);
     }
 }

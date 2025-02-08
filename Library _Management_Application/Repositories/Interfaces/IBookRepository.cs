@@ -14,6 +14,5 @@ namespace Library__Management_Application.Repositories.Interfaces
         public Book? GetBookById(int id);
         public List<Book> GetBookAll();
         public List<BookGetDto> FilterByTitle(string title);
-        //public List<BookGetDto> FilterBooksByAuthor(string authorName);
     }
 }

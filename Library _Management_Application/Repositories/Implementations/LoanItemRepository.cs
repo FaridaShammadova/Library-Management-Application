@@ -20,14 +20,14 @@ namespace Library__Management_Application.Repositories.Implementations
         }
 
         public LoanItem? GetLoanItemById(int id)
-            => context.LoanItems
+            => context.LoanItem
             .Include(x => x.Book)
             .Include(x => x.Loan)
             .Where(x => x.IsDeleted == false)
             .FirstOrDefault(x => x.Id == id);
 
         public List<LoanItem>? GetLoanItemAll()
-            => context.LoanItems
+            => context.LoanItem
             .Include(x => x.Book)
             .Include(x => x.Loan)
             .Where(x => x.IsDeleted == false)
